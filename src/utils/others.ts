@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { connection } from './connect';
 
-import { IOthers } from '../ts/interface/IOthers';
+import { IOthers, IOtherInfo } from '../ts/interface/IOthers';
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 async function getOtherInfo(): Promise<Array<IOthers>> {
@@ -32,4 +32,17 @@ async function handleOtherEnter(params: IOthers) {
         });
     });
 }
-export { getOtherInfo, handleOtherEnter };
+async function approveOther(params: IOtherInfo) {
+    const { orderId, approveState, approver } = params;
+    return new Promise((resolve, reject) => {
+        const sql = `update otherTable set state='已审批', approveState='${approveState}', approver='${approver}' where orderId='${orderId}'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
+export { getOtherInfo, handleOtherEnter, approveOther };

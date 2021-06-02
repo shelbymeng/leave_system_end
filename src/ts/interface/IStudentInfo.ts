@@ -1,5 +1,3 @@
-import EApproveState from '../enum/EApproveSatte';
-import EStudentState from '../enum/EStudentState';
 export default interface IStudentInfo {
     orderId: string; //请假单编号
     item_id: number;

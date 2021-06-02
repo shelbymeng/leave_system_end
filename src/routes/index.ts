@@ -13,8 +13,9 @@ import {
     getReplys,
     addReplys,
     getNews,
+    getPickTeacherInfo,
 } from '../utils/index';
-import { getOtherInfo, handleOtherEnter } from '../utils/others';
+import { approveOther, getOtherInfo, handleOtherEnter } from '../utils/others';
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -203,6 +204,7 @@ app.get('/getNews', async (req, res) => {
         });
     }
 });
+//  获取校外人员信息
 app.get('/getOtherInfo', async (req, res) => {
     const result = await getOtherInfo();
     if (result.length !== 0) {
@@ -213,6 +215,7 @@ app.get('/getOtherInfo', async (req, res) => {
         });
     }
 });
+//  校外人员提交信息
 app.post('/otherEnter', async (req, res) => {
     const handleResult = await handleOtherEnter(req.body);
     if (handleResult) {
@@ -224,6 +227,37 @@ app.post('/otherEnter', async (req, res) => {
         res.send({
             error: 981,
             msg: '提交失败',
+        });
+    }
+});
+//  领导批准校外人员
+app.post('/approveOther', async (req, res) => {
+    const result = await approveOther(req.body);
+    if (result) {
+        res.send({
+            error: 0,
+            msg: 'success',
+        });
+    } else {
+        res.send({
+            error: 278364,
+            msg: '批准失败',
+        });
+    }
+});
+//  获取指定教师的离校信息
+app.post('/getPickInfo', async (req, res) => {
+    const info = await getPickTeacherInfo(req.body);
+    if (info.length !== 0) {
+        res.send({
+            error: 0,
+            msg: 'success',
+            data: info,
+        });
+    } else {
+        res.send({
+            error: 23942,
+            data: [],
         });
     }
 });

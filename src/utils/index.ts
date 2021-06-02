@@ -186,6 +186,20 @@ async function getNews(): Promise<Array<INews>> {
         });
     });
 }
+//  获取指定教师的离校申请
+async function getPickTeacherInfo(params: IUser): Promise<Array<IStudentInfo>> {
+    const { account } = params;
+    return new Promise((resolve, reject) => {
+        const sql = `select * from leaveTable where pickTeacher = ${account} and state='正在审批'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
 export {
     login,
     getStudentInfos,
@@ -199,4 +213,5 @@ export {
     getReplys,
     addReplys,
     getNews,
+    getPickTeacherInfo,
 };
