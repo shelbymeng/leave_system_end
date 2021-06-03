@@ -186,6 +186,18 @@ async function getNews(): Promise<Array<INews>> {
         });
     });
 }
+async function deleteComment(commentId: string) {
+    return new Promise((resolve, reject) => {
+        const sql = `delete from commentsTable where commentId='${commentId}'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
 //  获取指定教师的离校申请
 async function getPickTeacherInfo(params: IUser): Promise<Array<IStudentInfo>> {
     const { account } = params;
@@ -214,4 +226,5 @@ export {
     addReplys,
     getNews,
     getPickTeacherInfo,
+    deleteComment,
 };

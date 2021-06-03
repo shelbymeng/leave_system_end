@@ -14,6 +14,7 @@ import {
     addReplys,
     getNews,
     getPickTeacherInfo,
+    deleteComment,
 } from '../utils/index';
 import { approveOther, getOtherInfo, handleOtherEnter } from '../utils/others';
 const app = express();
@@ -185,6 +186,16 @@ app.post('/addReplys', async (req, res) => {
         res.send({
             error: 3003,
             msg: '提交失败',
+        });
+    }
+});
+//  领导删除留言
+app.post('/deleteComment', async (req, res) => {
+    const result = await deleteComment(req.body.commentId);
+    if (result) {
+        res.send({
+            error: 0,
+            msg: 'success',
         });
     }
 });
